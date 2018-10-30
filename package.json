@@ -1,0 +1,31 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "AWS_PROFILE=dfmstpaul nodemon --inspect server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pftiller/think-near-s3.git"
+  },
+  "author": "Paul Tiller",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pftiller/think-near-s3/issues"
+  },
+  "homepage": "https://github.com/pftiller/think-near-s3#readme",
+  "dependencies": {
+    "aws-sdk": "^2.344.0",
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
+    "fs": "0.0.1-security",
+    "nodemon": "^1.18.5",
+    "path": "^0.12.7",
+    "s3-download": "^1.0.0",
+    "s3-download-stream": "^1.1.1"
+  }
+}
