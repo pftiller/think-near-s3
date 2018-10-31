@@ -9,34 +9,45 @@ let today = new Date();
 let year = today.getFullYear();
 let month = today.getMonth() +1;
 let yesterday = (today.getDate()) - 2;
+let count = 0;
 
 router.use('/api', (req, res, next) => {
     let key;
     if(fs.existsSync('output.txt')){
         fs.unlinkSync('output.txt');
     }
-    for (let i = 0; i < 39; i++) {
+    for (let i = 0; i < 6; i++) {
         if (i < 10) {
-            key = `partner=DFMStPaul/version=2013-09/totals/year=${year}/month=${month}//000${i}_part_00`;
-            downloadFile(bucketName, key)
+            key = `partner=DFMStPaul/version=2013-09/totals/year=${year}/month=${month}/000${i}_part_00`;
         }
         else {
             key = `partner=DFMStPaul/version=2013-09/totals/year=${year}/month=${month}/00${i}_part_00`;
-            downloadFile(bucketName, key)
         }
+        downloadFile(key)
+        .then(()=>{
+            count += 1;
+            if(count >= 6) {
+                parseAndSend();
+            }
+        })
+        .catch((err)=>{
+            console.log('here is the error', err);
+        })
     }
+   
     res.sendStatus(200);
 })
 
-let downloadFile = (bucketName, key) => {
+let downloadFile = (key) => {
     var params = {
         Bucket: bucketName,
         Key: key
     }
- 
+ return new Promise(function(resolve, reject) {
     s3.getObject(params, (err, data) => {
         if (err) {
-            console.log(err)
+            console.log(err);
+            reject(err);
         }
         else {
             fs.appendFile('output.txt', data.Body, function (err) {
@@ -44,9 +55,16 @@ let downloadFile = (bucketName, key) => {
                     throw err;
                 }
                 console.log('Saved!');
-                });
+                resolve('ok');
+                })
+              
             }
+     
         })
+    })
+}
+let parseAndSend = ()=> {
+    console.log('Parse and send');
 }
 // var params = {
 //     Bucket: 'thinknear-share',
