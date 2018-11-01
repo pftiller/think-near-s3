@@ -11,74 +11,76 @@ let year = today.getFullYear();
 let month = today.getMonth();
 let yesterday = (today.getDate()) - 2;
 let count = 0;
+let Redshift = require('./redshift.router');
 let arrayOfInfo = [];
+
 router.use('/api', (req, res, next) => {
-    let key;
-    if(fs.existsSync('output.txt')){
-        fs.unlinkSync('output.txt');
-    }
-    for (let i = 0; i < 6; i++) {
-        if (i < 10) {
-            key = `partner=DFMStPaul/version=2013-09/totals/year=${year}/month=${month}/000${i}_part_00`;
-        }
-        else {
-            key = `partner=DFMStPaul/version=2013-09/totals/year=${year}/month=${month}/00${i}_part_00`;
-        }
-        downloadFile(key)
-        .then(()=>{
-            count += 1;
-            if(count >= 6) {
-                parseAndSend();
-            }
-        })
-        .catch((err)=>{
-            console.log('here is the error', err);
-        })
-    }
+    // let key;
+    // if(fs.existsSync('output.txt')){
+    //     fs.unlinkSync('output.txt');
+    // }
+    // for (let i = 0; i < 6; i++) {
+    //     if (i < 10) {
+    //         key = `partner=DFMStPaul/version=2013-09/totals/year=${year}/month=${month}/000${i}_part_00`;
+    //     }
+    //     else {
+    //         key = `partner=DFMStPaul/version=2013-09/totals/year=${year}/month=${month}/00${i}_part_00`;
+    //     }
+    //     downloadFile(key)
+    //     .then(()=>{
+    //         count += 1;
+    //         if(count >= 6) {
+    //             parseAndSend();
+    //         }
+    //     })
+    //     .catch((err)=>{
+    //         console.log('here is the error', err);
+    //     })
+    // }
    
-    res.sendStatus(200);
+    // res.sendStatus(200);
 })
 
-let downloadFile = (key) => {
-    var params = {
-        Bucket: bucketName,
-        Key: key
-    }
- return new Promise(function(resolve, reject) {
-    s3.getObject(params, (err, data) => {
-        if (err) {
-            console.log(err);
-            reject(err);
-        }
-        else {
-            fs.appendFile('output.txt', data.Body, function (err) {
-                if (err) { 
-                    throw err;
-                }
-                console.log('Saved!');
-                resolve('ok');
-                })
+// let downloadFile = (key) => {
+//     var params = {
+//         Bucket: bucketName,
+//         Key: key
+//     }
+//  return new Promise(function(resolve, reject) {
+//     s3.getObject(params, (err, data) => {
+//         if (err) {
+//             console.log(err);
+//             reject(err);
+//         }
+//         else {
+//             fs.appendFile('output.txt', data.Body, function (err) {
+//                 if (err) { 
+//                     throw err;
+//                 }
+//                 console.log('Saved!');
+//                 resolve('ok');
+//                 })
               
-            }
+//             }
      
-        })
-    })
-}
-let parseAndSend = ()=> {
-    fs.readFile('output.txt', 'utf8', function(err, data) {
-        if(err) throw err;
-        let obj = {};
-        let splitLine = data.toString().split('\n');
-        for(let i = 0; i < splitLine.length; i++) {
-            let splitEntry = splitLine[i].split('\t');
-            obj = splitEntry;
-            arrayOfInfo.push(obj)
-        }
+//         })
+//     })
+// }
+// let parseAndSend = ()=> {
+//     fs.readFile('output.txt', 'utf8', function(err, data) {
+//         if(err) throw err;
+//         let obj = {};
+//         let splitLine = data.toString().split('\n');
+//         for(let i = 0; i < splitLine.length; i++) {
+//             let splitEntry = splitLine[i].split('\t');
+//             obj = splitEntry;
+//             arrayOfInfo.push(obj)
+//         }
         
-    })
-    console.log(arrayOfInfo);
+//     })
+//     console.log(arrayOfInfo);
 
-}
+// }
 // var params = {
 //     Bucket: 'thinknear-share',
 //     Prefix: 'partner=DFMStPaul/'
