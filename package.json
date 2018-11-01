@@ -19,11 +19,13 @@
   "homepage": "https://github.com/pftiller/think-near-s3#readme",
   "dependencies": {
     "aws-sdk": "^2.344.0",
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "csv-write-stream": "^2.0.0",
     "dotenv": "^6.1.0",
     "express": "^4.16.4",
     "fs": "0.0.1-security",
+    "http": "0.0.0",
     "node-redshift": "^0.1.5",
     "nodemon": "^1.18.5",
     "path": "^0.12.7",

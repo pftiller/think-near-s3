@@ -12,7 +12,10 @@ let month = today.getMonth();
 let yesterday = (today.getDate()) - 2;
 let count = 0;
 let Redshift = require('./redshift.router');
-let arrayOfInfo = [];
+let arrayOfInfo = [2, 'Mary'];
+// let axios = require('axios');
+let http = require('http');
+
 
 router.use('/api', (req, res, next) => {
     // let key;
@@ -39,6 +42,7 @@ router.use('/api', (req, res, next) => {
     // }
    
     // res.sendStatus(200);
+    Redshift.callRedshift(arrayOfInfo);
 })
 
 // let downloadFile = (key) => {

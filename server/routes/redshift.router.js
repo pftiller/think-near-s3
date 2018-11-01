@@ -5,18 +5,19 @@ const router = express.Router();
 
 
 
-router.get('/', (req, res) => {
+let callRedshift = (arr)=> {
+    console.log(arr);
     const query = `SELECT *
     FROM people`;
     pool.query(query)
         .then((result) => {
             let people = result.rows;
-            res.send(people);
+            return people;
         })
         .catch((err) => {
             console.log('error', err);
         })
-});
+};
 
 
 
@@ -51,4 +52,6 @@ router.get('/', (req, res) => {
 // module.exports = {
 //     putToRedshift: putToRedshift
 // }
-module.exports = router;
+module.exports = {
+    callRedshift: callRedshift
+}
