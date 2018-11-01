@@ -4,13 +4,14 @@ require('dotenv').config();
 const AWS = require('aws-sdk')
 const fs = require('fs')
 const bucketName = 'thinknear-share';
+var toJSON = require('plain-text-data-to-json');
 var s3 = new AWS.S3()
 let today = new Date();
 let year = today.getFullYear();
-let month = today.getMonth() +1;
+let month = today.getMonth();
 let yesterday = (today.getDate()) - 2;
 let count = 0;
-
+let arrayOfInfo = [];
 router.use('/api', (req, res, next) => {
     let key;
     if(fs.existsSync('output.txt')){
@@ -64,7 +65,19 @@ let downloadFile = (key) => {
     })
 }
 let parseAndSend = ()=> {
-    console.log('Parse and send');
+    fs.readFile('output.txt', 'utf8', function(err, data) {
+        if(err) throw err;
+        let obj = {};
+        let splitLine = data.toString().split('\n');
+        for(let i = 0; i < splitLine.length; i++) {
+            let splitEntry = splitLine[i].split('\t');
+            obj = splitEntry;
+            arrayOfInfo.push(obj)
+        }
+        
+    })
+    console.log(arrayOfInfo);
+
 }
 // var params = {
 //     Bucket: 'thinknear-share',
