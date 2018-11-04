@@ -9,7 +9,7 @@ let today = new Date();
 // let year = today.getFullYear();
 // let month = today.getMonth();
 let year = 2018;
-let month = 10;
+let month = '11';
 let yesterday = (today.getDate()) - 2;
 let Redshift = require('./redshift.router');
 let arrayOfInfo = [];
@@ -36,7 +36,6 @@ router.use('/api', (req, res, next) => {
         })
         .catch((err)=>{
             count +=1;
-            console.log('here is the error', err);
         })
     }
    
