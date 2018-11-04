@@ -6,20 +6,21 @@ const fs = require('fs')
 const bucketName = 'thinknear-share';
 var s3 = new AWS.S3()
 let today = new Date();
-let year = today.getFullYear();
-let month = today.getMonth();
+// let year = today.getFullYear();
+// let month = today.getMonth();
+let year = 2018;
+let month = 10;
 let yesterday = (today.getDate()) - 2;
-let count = 0;
 let Redshift = require('./redshift.router');
 let arrayOfInfo = [];
-
+let count = 0;
 
 router.use('/api', (req, res, next) => {
     let key;
     if(fs.existsSync('output.txt')){
         fs.unlinkSync('output.txt');
     }
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 40; i++) {
         if (i < 10) {
             key = `partner=DFMStPaul/version=2013-09/totals/year=${year}/month=${month}/000${i}_part_00`;
         }
@@ -28,12 +29,13 @@ router.use('/api', (req, res, next) => {
         }
         downloadFile(key)
         .then(()=>{
-            count += 1;
-            if(count >= 1) {
+            count +=1;
+            if(count >= 40) {
                 parseAndSend();
             }
         })
         .catch((err)=>{
+            count +=1;
             console.log('here is the error', err);
         })
     }
@@ -55,7 +57,7 @@ let downloadFile = (key) => {
         else {
             fs.appendFile('output.txt', data.Body, function (err) {
                 if (err) { 
-                    throw err;
+                   console.log(params.key)
                 }
                 console.log('Saved!');
                 resolve('ok');
@@ -82,7 +84,6 @@ let parseAndSend = ()=> {
         console.log(arrayOfInfo);
         Redshift.callRedshift(arrayOfInfo);
     })
-    
 }
 // AWS.config.update({
 //     accessKeyId: '',
@@ -92,7 +93,8 @@ let parseAndSend = ()=> {
 // });
 // var s3 = new AWS.S3()
 // var params = {
-//     Bucket: 'dfm-signal'
+//     Bucket: 'thinknear-share',
+//     Prefix: 'partner=DFMStPaul/'
 // }
 //     s3.listObjects(params, (err, data)=>{
 //         if (err) {
