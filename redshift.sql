@@ -1,4 +1,5 @@
 CREATE TABLE "thinknear" (
+	"platform" varchar(50),
 	"advertiser_id" integer,
 	"advertiser_name" varchar(255),
 	"line_item_name" varchar(255),

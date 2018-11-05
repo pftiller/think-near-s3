@@ -6,11 +6,18 @@ const fs = require('fs')
 const bucketName = 'thinknear-share';
 var s3 = new AWS.S3()
 let today = new Date();
-// let year = today.getFullYear();
-// let month = today.getMonth();
-let year = 2018;
-let month = '11';
-let yesterday = (today.getDate()) - 2;
+let yesterday = new Date(today);
+yesterday.setDate(today.getDate() - 1);
+let yesterdayMonth = yesterday.getMonth() +1;
+let year = today.getFullYear();
+let month = today.getMonth()+1 < 10 ? '0' + today.getMonth()+1 : today.getMonth()+1;
+let lastDayThisMonth = new Date(year, month, 0).getDate();
+let dateData = {
+    year: year,
+    month: month,
+    yesterdayMonth: yesterdayMonth, 
+    lastDayThisMonth: lastDayThisMonth
+}
 let Redshift = require('./redshift.router');
 let arrayOfInfo = [];
 let count = 0;
@@ -81,15 +88,15 @@ let parseAndSend = ()=> {
             arrayOfInfo.push(obj)
         }
         console.log(arrayOfInfo);
-        Redshift.callRedshift(arrayOfInfo);
+        Redshift.callRedshift(arrayOfInfo, dateData);
     })
 }
-// AWS.config.update({
-//     accessKeyId: '',
-//     secretAccessKey: '',
-//     region: 'us-west-1'
+AWS.config.update({
+    accessKeyId: '',
+    secretAccessKey: '',
+    region: 'us-west-1'
 
-// });
+});
 // var s3 = new AWS.S3()
 // var params = {
 //     Bucket: 'thinknear-share',
