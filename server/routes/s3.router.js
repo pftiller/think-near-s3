@@ -91,12 +91,12 @@ let parseAndSend = ()=> {
         Redshift.callRedshift(arrayOfInfo, dateData);
     })
 }
-AWS.config.update({
-    accessKeyId: '',
-    secretAccessKey: '',
-    region: 'us-west-1'
+// AWS.config.update({
+//     accessKeyId: '',
+//     secretAccessKey: '',
+//     region: 'us-west-1'
 
-});
+// });
 // var s3 = new AWS.S3()
 // var params = {
 //     Bucket: 'thinknear-share',
