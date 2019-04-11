@@ -91,27 +91,4 @@ let parseAndSend = ()=> {
         Redshift.callRedshift(arrayOfInfo, dateData);
     })
 }
-// AWS.config.update({
-//     accessKeyId: '',
-//     secretAccessKey: '',
-//     region: 'us-west-1'
-
-// });
-// var s3 = new AWS.S3()
-// var params = {
-//     Bucket: 'thinknear-share',
-//     Prefix: 'partner=DFMStPaul/'
-// }
-//     s3.listObjects(params, (err, data)=>{
-//         if (err) {
-//             console.log(err)
-//         }
-//         else {
-//             console.log(data);
-//         }
-//     })
-// })
-
-
-
 module.exports = router;
